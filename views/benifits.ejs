@@ -1,0 +1,68 @@
+
+
+<%- include('./header.ejs'); %>
+
+
+<!-- Statistics -->
+<div class="row match-height">
+  
+  <div class="col-12">
+      <div class="card">
+          <div class="card-header">
+              <h4 class="card-title">Benifits</h4>
+              <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+          </div>
+          <div class="card-content collapse show">
+              <div class="card-body">
+                  <form action="/admin/add/benifit" method="post">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label for="donationinput1" class="sr-only">Add Benifit</label>
+                            <div class="fm-ele">
+                                <h6>Add Benifit</h6>
+                                <input required type="text" id="name" class="form-control inpt-info" placeholder="Benifit Name"  name="name" >
+                                <br>
+                                <button type="submit" class="btn btn-warning">Add</button>
+                            </div>
+                        </div>      
+                    </div>
+                </form>
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th class="card-title">Sr no.</th>
+                                  <th class="card-title">Benifit name</th>
+                                  <th class="card-title">Deleted</th>
+                                  <th class="card-title">Actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <!-- loop -->
+                              <% for(let i=0;i<benifits.length;i++){%>
+                                <tr>
+                                  <th class="card-subtitle" scope="row"><%= i+1%></th>
+                                  <td class="card-subtitle"><%= benifits[i].name%></td>
+                                  <td class="card-subtitle"><%= benifits[i].is_deleted?"Yes":"No"%></td>
+                                  <td>
+                                      <a href="/admin/benifits/<%= benifits[i].id%>"><button type="button" class="btn mr-1 mb-1 btn-dark btn-sm"><i class="la la-edit"></i></button></a>
+                                  </td>
+                                </tr>
+                              <%}%>
+                              
+                              <!-- loop -->
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!--/ Statistics -->
+      </div>
+    </div>
+  </div>
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+<%- include('./footer.ejs'); %>

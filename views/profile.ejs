@@ -1,0 +1,92 @@
+<%- include("./nestedHeader.ejs") %>
+<!-- End of header -->
+
+<div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+<center>
+<section id="content-types">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h1>Admin Info</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/profile/<%= admin.id%>" method="post">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">First Name</label>
+                                <div class="fm-ele">
+                                    <h6>First name</h6>
+                                    <input type="text"  class="form-control inpt-info" value="<%= admin.first_name%>" id="first_name" name="first_name" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Last Name</label>
+                                <div class="fm-ele">
+                                    <h6>Last name</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= admin.last_name%>" id="last_name"  name="last_name" >
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Email</label>
+                                <div class="fm-ele">
+                                    <h6>Email</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= admin.email%>" id="email" name="email" >
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Phone</label>
+                                <div class="fm-ele">
+                                    <h6>Phone</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= admin.phone_no%>"  id="phone_no" name="phone_no" >
+                                </div>
+                            </div>
+                            
+                            
+
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                    <form action="/admin/profile/password" method="post">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Change password</label>
+                                <div class="fm-ele">
+                                    <h6>Change password</h6>
+                                    <input required type="password" id="old_password" class="form-control inpt-info" placeholder="Current password"  name="old_password" >
+                                    <% if(status && status.pass){%> <h6 class="error">Incorrect password!</h6> <%}%>
+                                    <br>
+                                    <input required type="password" id="new_password" class="form-control inpt-info"  placeholder="New password" name="new_password" >
+                                    <% if(status && status.conf_pass){%> <h6 class="error">Passwords do not match!</h6> <%}%>
+                                    <br>
+                                    <input required type="password" id="confirm_password" class="form-control inpt-info" placeholder="Confirm password" name="confirm_password" >
+                                    <% if(status && status.success){%> <h6 class="success">Password changed</h6> <%}%>
+                                    <br>
+                                    <button type="submit" class="btn btn-warning">Change Password</button>
+                                </div>
+                            </div>      
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</center>
+</div>
+</div>
+</div>
+
+
+<!-- start of footer -->
+<%- include("./nestedFooter.ejs") %>

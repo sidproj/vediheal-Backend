@@ -1,0 +1,61 @@
+
+
+<%- include('./header.ejs'); %>
+
+
+<!-- Statistics -->
+<div class="row match-height">
+  
+  <div class="col-12">
+      <div class="card">
+          <div class="card-header">
+              <h4 class="card-title">Instructors</h4>
+              <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+          </div>
+          <div class="card-content collapse show">
+              <div class="card-body">
+                  <p class="card-text">Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap. You can use any example of below table for your table and it can be use with any type of bootstrap tables. </p>
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th class="card-title">Sr no.</th>
+                                  <th class="card-title">First name</th>
+                                  <th class="card-title">Last name</th>
+                                  <th class="card-title">Email</th>
+                                  <th class="card-title">Phone</th>
+                                  <th class="card-title">Actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <!-- loop -->
+                              <% for(let i=0;i<instructors.length;i++){%>
+                                <tr>
+                                  <th class="card-subtitle" scope="row">1</th>
+                                  <td class="card-subtitle"><%= instructors[i].first_name%></td>
+                                  <td class="card-subtitle"><%= instructors[i].last_name%></td>
+                                  <td class="card-subtitle"><%= instructors[i].email%></td>
+                                  <td class="card-subtitle"><%= instructors[i].phone_no%></td>
+                                  <td class="card-subtitle"><%= instructors[i].first_name%></td>
+                                  <td>
+                                      <a href="/admin/instructors/<%= instructors[i].id%>"><button type="button" class="btn mr-1 mb-1 btn-dark btn-sm"><i class="la la-edit"></i></button></a>
+                                  </td>
+                                </tr>
+                              <%}%>
+                              
+                              <!-- loop -->
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!--/ Statistics -->
+      </div>
+    </div>
+  </div>
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+<%- include('./footer.ejs'); %>

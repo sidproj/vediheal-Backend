@@ -32,17 +32,18 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
-    is_admin: {
-      type: Boolean,
-      default: false,
-    },
+    is_admin:{
+      type:Boolean,
+      default:false,
+    }
   });
 
   
-// static method to login user
+// static method to login instructor
 userSchema.statics.login = async (email, password) => {
     const user = await User.findOne({ email });
     if (user) {
+      if(user.is_deleted) throw Error("This user is blocked");
       const passwordMatched = await bcrypt.compare(password, user.password);
       if (passwordMatched) {
         return user;
@@ -50,17 +51,28 @@ userSchema.statics.login = async (email, password) => {
       throw Error("Incorrect Password");
     }
     throw Error("This email address does not exist");
-  };
-  
-  userSchema.statics.hashPassword = async (password) => {
-    if (password != undefined) {
-      const salt = await bcrypt.genSalt();
-      password = await bcrypt.hash(password, salt);
-      return password;
+};
+
+userSchema.statics.login_admin = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (user) {
+    if(user.is_deleted) return false;
+    const passwordMatched = await bcrypt.compare(password, user.password);
+    if (passwordMatched) {
+      return user;
     }
-  };
-  
-  
+    return false;
+  }
+  return false;
+};
+
+userSchema.statics.hashPassword = async (password) => {
+  if (password != undefined) {
+    const salt = await bcrypt.genSalt();
+    password = await bcrypt.hash(password, salt);
+    return password;
+  }
+};  
   
 const User = mongoose.model("user", userSchema);
 

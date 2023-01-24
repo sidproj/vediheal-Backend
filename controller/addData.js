@@ -1,27 +1,114 @@
+const Instructor = require("../models/instructor");
+const User = require("../models/user");
 const Reiki = require("../models/reiki");
+const Appointment = require("../models/appointments");
 const Benifit = require("../models/benifits");
 
-// module.exports.set_reiki_info = async(req,res)=>{
-//     const names=["Anti-Depression Reiki","Pain Relief Reiki","Reiki for Addiction and detoxification","Sleep Disturbance Reiki","Health Crisis Reiki"]
-//     const descriptions = [
-//         "Reiki is a scientific and research-proven technique to get rid of anxiety and depression through our body’s natural healing ability.",
-//         "Reiki is a scientific and research-proven technique that helps decrease pain perception by healing the emotional aspect of pain.",
-//         "Reiki helps a person to shift their energy in a positive direction and no longer want to use or abuse any illicit substances.",
-//         "Reiki is a scientific and research-proven technique that helps in solving the problems like Insomnia or Narcolepsy.",
-//         "Support the well-being of people receiving traditional medical treatments such as chemotherapy, radiation, surgery, and kidney dialysis."
-//     ]
-//     for(let i=0;i<names.length;i++){
+module.exports.add_instructor_reiki = async (req,res)=>{
+    try{
+        const instructor = await Instructor.findOne();
+        const reiki = await Reiki.findOne();
+        instructor.instructorReikis = {reiki:reiki.id};
+        await instructor.save();
+        res.send(instructor);
+    }catch(error){
+        res.send(error);
+    }
+}
+
+//current----------------
+module.exports.get_appointment_details = async(req,res)=>{
+    // try{
         
-//         const reiki = new Reiki({
-//             name:names[i],
-//             description:descriptions[i],
-//             image:"",
-//             benifits:[],
-//         })
-//         await reiki.save();
-//     }
-//     res.send("saved");
-// }
+        // const user = await User.findOne();
+        // const instructor  = await Instructor.findOne();
+        // const reiki=await Reiki.findOne();
+
+        // const appointment = Appointment({
+        //     start_time: new Date(),
+        //     end_time: new Date(),
+        //     user_id:user.id,
+        //     instructor_id:instructor.id,
+        //     reiki_id:reiki.id,
+        // });
+        // await appointment.save();
+        const appointment = await Appointment.findOne();
+
+        await appointment.populate({
+            path:'user_id',
+            ref:User,
+        });
+
+        await appointment.populate({
+            path:'instructor_id',
+            ref:Instructor,
+        });
+
+        await appointment.populate({
+            path:'reiki_id',
+            ref:Reiki,
+        });
+        
+        console.log(appointment);
+
+        res.send("appointment");
+    // }catch(error){
+    //     res.send(error);
+    // }
+}
+
+module.exports.add_benifits_to_reiki = async (req,res)=>{
+    try{
+        const reiki = await Reiki.findOne({name:"Anti-Depression Reiki"});
+        console.log(reiki);
+        const benifits=[];
+        const names =[ 
+            "Science Proven",
+            "Cost Effective",
+            "Boosts Mood",
+            "Relieves Anxiety",
+            "Heals Depression"];
+        
+        for(let i=0;i<names.length;i++){
+            const r = await Benifit.findOne({name:names[i]});
+            benifits.push(r.id);
+        }
+        reiki.benifits = [];
+        reiki.benifits = benifits;
+        await reiki.save();
+        res.send("Done");
+    }catch(err){
+        console.log(err);
+        res.send(err);
+    }
+}
+
+module.exports.add_user = async (req,res)=>{
+    const user = User({
+        first_name:"Anurag",
+        last_name:"Sharma",
+        email:"anuragsharma6269@gmail.com",
+        phone_no:9876543210,
+
+    });
+    await user.save();
+    user.password = await User.hashPassword("1234@abcdA");
+    await user.save();
+    res.send("Done");
+}
+
+module.exports.add_instructor = async (req,res)=>{
+    const instructor = Instructor({
+        first_name:"Sidhraj",
+        last_name:"Mori",
+        email:"sdkm7016816547@gmail.com",
+        phone_no:9106790978,
+    });
+    await instructor.save();
+    instructor.password = await Instructor.hashPassword("1234@abcdA");
+    await instructor.save();
+    res.send("Done");
+}
 
 module.exports.set_benifits_info = async (req,res)=>{
     const names = ["Science Proven",

@@ -1,18 +1,34 @@
-const express = require("express")
 const mongoose = require("mongoose");
+const express = require("express");
 require('dotenv').config();
 const bodyParser = require("body-parser");
+var cookieParser = require('cookie-parser');
 var path = require("path");
-
-const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
-const multer = require("multer");
-
-
 const cors = require("cors");
+
+
+//models
+const Instructor = require("./models/instructor");
+const User = require("./models/user");
+const Reiki = require("./models/reiki");
+const Appointment = require("./models/appointments");
+const Benifit = require("./models/benifits");
+
+
+//routes
+const reiki = require("./routes/reiki");
+const appointment = require("./routes/appointments");
+const login = require("./routes/login");
+const register = require("./routes/register");
+const profile = require("./routes/profile");
+const password = require("./routes/password");
+const addData = require("./routes/addData");
+const admin = require("./routes/admin");
+
 const app = express();
 
+app.options('*', cors());
 app.use(
   cors({
     origin: [
@@ -20,11 +36,6 @@ app.use(
     ],
   })
 );
-
-
-//routes
-const reiki = require("./routes/reiki");
-
 
 app.use(express.static(__dirname + "/public"));
 
@@ -45,18 +56,30 @@ mongoose
 
 // view engine setup
 
-app.set("view engine", "jade");
+app.set("view engine", "ejs");
 
 app.use(cors());
 
 app.use(logger("dev"));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use(express.urlencoded());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //using routes
+
+// app.use("/addData",addData);
+
+app.use("/password",password);
+app.use("/admin",admin);
+//testing---------------
+//----------------------
+
+//done------------------
 app.use("/reiki",reiki);
-const addDataController = require("./controller/addData");
-app.get("/setData",addDataController.set_benifits_info);
+app.use("/profile",profile);
+app.use("/register",register);
+app.use("/login",login);
+app.use("/aapointment",appointment);
+//----------------------

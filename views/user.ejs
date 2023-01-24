@@ -1,0 +1,97 @@
+<%- include("./nestedHeader.ejs") %>
+<!-- End of header -->
+
+<div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+<center>
+<section id="content-types">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h1>User Info</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/edit/instructor/<%= user.id%>" method="post">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">First Name</label>
+                                <div class="fm-ele">
+                                    <h6>First name</h6>
+                                    <input type="text"  class="form-control inpt-info" value="<%= user.first_name%>" id="first_name" name="first_name" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Last Name</label>
+                                <div class="fm-ele">
+                                    <h6>Last name</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= user.last_name%>" id="last_name"  name="last_name" >
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Email</label>
+                                <div class="fm-ele">
+                                    <h6>Email</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= user.email%>" id="email" name="email" >
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Phone</label>
+                                <div class="fm-ele">
+                                    <h6>Phone</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= user.phone_no%>"  id="phone_no" name="phone_no" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">User Access</label>
+                                <div class="fm-ele">
+                                    <h6>User Access</h6>
+                                    <div>
+                                        <% if(user.is_deleted){%>
+                                        <a href="/admin/unblock/user/<%= user.id%>"><button type="button" class="btn mr-1 mb-1 btn-primary">Unblock User</button></a><%}else{%>
+                                        <a href="/admin/block/user/<%= user.id%>"><button type="button" class="btn mr-1 mb-1 btn-light">Block User</button></a>
+                                        <%}%>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="sr-only">Admin Access</label>
+                                <div class="fm-ele">
+                                    <h6>Admin Access</h6>
+                                    <div>
+                                        <% if(user.is_admin){ %>
+                                        <a href="#"><button type="button" class="btn mr-1 mb-1 btn-dark">Make ADMIN user</button></a><%}else{%>
+                                        <a href="#"><button type="button" class="btn mr-1 mb-1 btn-warning">Make User ADMIN</button></a>
+                                        <%}%>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</center>
+</div>
+</div>
+</div>
+
+
+<!-- start of footer -->
+<%- include("./nestedFooter.ejs") %>

@@ -1,0 +1,124 @@
+<%- include("./nestedHeader.ejs") %>
+<!-- End of header -->
+
+<div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+<center>
+<section id="content-types">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h1>Reiki Info</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/edit/reiki/<%= reiki.id%>" method="post">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Reiki name</label>
+                                <div class="fm-ele">
+                                    <h6>Reiki name</h6>
+                                    <input type="text"  class="form-control inpt-info" value="<%= reiki.name%>" id="name" name="name" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Description</label>
+                                <div class="fm-ele">
+                                    <h6>Description</h6>
+                                    <textarea id="description" rows="5" class="form-control square" name="description" spellcheck="false">    
+                                    <%= reiki.description.trim()%>
+                                    </textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Image</label>
+                                <div class="fm-ele">
+                                    <h6>Image Link</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= reiki.image%>" id="image" name="image" >
+                                    <img src="<%= reiki.image%>" />
+                                </div>
+                            </div>
+                            
+                            <!-- <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Benifits</label>
+                                <div class="fm-ele">
+                                    <h6>Benifits</h6>
+                                    <input type="text" id="first_name" class="form-control inpt-info" value="<%= reiki.phone_no%>"  id="benifits" name="benifits" >
+                                </div>
+                            </div> -->
+                            <div class="form-group fm-ele">
+                                <h6>Benifits</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Benifits</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%for(let i=0;i<benifit.length;i++){%>
+                                                <tr>
+                                                    <td>
+                                                        <% if( reiki.benifits.includes(benifit[i].id)){%>
+                                                            <input type="checkbox" id="benifit" name="benifit" value="<%= benifit[i].id %>" checked>
+                                                            <label for="benifit"> <%= benifit[i].name %> </label>
+                                                        <%}else{%>
+                                                            <input type="checkbox" id="benifit" name="benifit" value="<%= benifit[i].id %>">
+                                                            <label for="benifit"> <%= benifit[i].name %> </label>
+                                                        <%}%>
+                                                    </td>
+                                                </tr>
+                                            <%}%>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">Expectation</label>
+                                <div class="fm-ele">
+                                    <h6>Expectation</h6>
+                                    <div>
+                                        <textarea id="expectation" rows="5" class="form-control square" name="expectation" spellcheck="false">
+                                            <%= reiki.expectations%>
+                                        </textarea>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="sr-only">Is removed</label>
+                                <div class="fm-ele">
+                                    <div>
+                                        <% if(reiki.is_deleted){ %>
+                                        <a href="/admin/change/reiki/<%= reiki.id%>"><button type="button" class="btn mr-1 mb-1 btn-dark">Add</button></a><%}else{%>
+                                        <a href="/admin/change/reiki/<%= reiki.id%>"><button type="button" class="btn mr-1 mb-1 btn-warning">Remove</button></a>
+                                        <%}%>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</center>
+</div>
+</div>
+</div>
+</script>
+
+<!-- start of footer -->
+<%- include("./nestedFooter.ejs") %>

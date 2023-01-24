@@ -1,0 +1,106 @@
+<%- include("./nestedHeader.ejs") %>
+<!-- End of header -->
+
+<div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+<center>
+<section id="content-types">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h1>Appointment Info</h1>
+                    <h3>(Ready Only)</h3>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-body">
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Appointment ID</label>
+                                <div class="fm-ele">
+                                    <h6>Appointment ID</h6>
+                                    <input type="text" disabled class="form-control inpt-info" value="<%= appointment.id %>" id="id" name="id" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">User name</label>
+                                <div class="fm-ele">
+                                    <h6>User name</h6>
+                                    <input type="text" disabled class="form-control inpt-info" value="<%= appointment.user_id.first_name%> <%= appointment.user_id.last_name%>" id="name" name="name" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">User Email</label>
+                                <div class="fm-ele">
+                                    <h6>User email</h6>
+                                    <input type="text" disabled class="form-control inpt-info" value="<%= appointment.user_id.email%>" id="name" name="name" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">User Phone</label>
+                                <div class="fm-ele">
+                                    <h6>User phone</h6>
+                                    <input type="text" disabled class="form-control inpt-info" value="<%= appointment.user_id.phone_no%>" id="name" name="name" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Instructor name</label>
+                                <div class="fm-ele">
+                                    <h6>Instructor name</h6>
+                                    <input type="text" disabled class="form-control inpt-info" value="<%= appointment.instructor_id.first_name%> <%= appointment.instructor_id.last_name%>" id="name" name="name" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="donationinput1" class="sr-only">Instructor Email</label>
+                            <div class="fm-ele">
+                                <h6>Instructor email</h6>
+                                <input type="text" disabled class="form-control inpt-info" value="<%= appointment.instructor_id.email%>" id="name" name="name" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="donationinput1" class="sr-only">Instructor Phone</label>
+                            <div class="fm-ele">
+                                <h6>Instructor phone</h6>
+                                <input type="text" disabled class="form-control inpt-info" value="<%= appointment.instructor_id.phone_no%>" id="name" name="name" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="donationinput1" class="sr-only">Reiki name</label>
+                            <div class="fm-ele">
+                                <h6>Reiki name</h6>
+                                <input type="text" disabled class="form-control inpt-info" value="<%= appointment.reiki_id.name%>" id="name" name="name" >
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="donationinput1" class="sr-only">Price</label>
+                            <div class="fm-ele">
+                                <h6>Price</h6>
+                                <input type="text" disabled class="form-control inpt-info" value="₹<%= appointment.price %> " id="name" name="name" >
+                            </div>
+                        </div>
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</center>
+</div>
+</div>
+</div>
+
+
+<!-- start of footer -->
+<%- include("./nestedFooter.ejs") %>

@@ -16,6 +16,10 @@ const reikiSchema = new mongoose.Schema({
         type: [mongoose.SchemaTypes.ObjectId],
         ref: "Benifit",
     },
+    expectations:{
+        type:String,
+        require:[true,"Please enter expectations"],
+    },
     is_deleted: {
       type: Boolean,
       default: false,

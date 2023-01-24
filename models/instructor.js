@@ -1,16 +1,6 @@
 const mongoose = require("mongoose");
-
-const sessionsSchema = new mongoose.Schema({
-    start_time:{
-        type:Date,
-    },
-    end_time:{
-        type:Date,
-    },
-    price:{
-        type:Number,
-    }
-});
+const { isEmail, isStrongPassword } = require("validator");
+const bcrypt = require("bcrypt");
 
 const instructorSchema = new mongoose.Schema({
     first_name: {
@@ -38,22 +28,42 @@ const instructorSchema = new mongoose.Schema({
       minlength: [10, "Phone number must be 10 digits"],
       maxlength: [10, "Phone number must be 10 digits"],
     },
-    reikis:{
-        type:[mongoose.SchemaTypes.ObjectId],
-        ref:"Reiki",
+    instructorReikis:{
+        type:[{
+          type:mongoose.SchemaTypes.ObjectId,
+          ref:"reiki",
+        }],
     },
-    session_type:{
-        type:[sessionsSchema],
+    description:{
+      type:String,
+      default:"Hello. I'am an Instructor at vediheal."
     },
     is_deleted: {
       type: Boolean,
       default: false,
     },
-    is_admin: {
-      type: Boolean,
-      default: false,
-    },
   });
+
+// static method to login user
+instructorSchema.statics.login = async (email, password) => {
+  const instructor = await Instructor.findOne({ email });
+  if (instructor) {
+    const passwordMatched = await bcrypt.compare(password, instructor.password);
+    if (passwordMatched) {
+      return instructor;
+    }
+    throw Error("Incorrect Password");
+  }
+  throw Error("This email address does not exist");
+};
+
+instructorSchema.statics.hashPassword = async (password) => {
+  if (password != undefined) {
+    const salt = await bcrypt.genSalt();
+    password = await bcrypt.hash(password, salt);
+    return password;
+  }
+};
 
 const Instructor = mongoose.model('instructor',instructorSchema);
 module.exports = Instructor;

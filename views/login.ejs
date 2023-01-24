@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>VediHeal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+        body {
+    background: #b5405b;
+    background: linear-gradient(to right, #b5405b, #b5405b);
+  }
+  
+  .btn-login {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 0.75rem 1rem;
+    background: #b5405b;
+    border-color: linear-gradient(to right, #b5405b, #b5405b) !important;
+    color: #fff;
+    transition-duration: 0.1s !important;
+    transition-delay: 0.1s !important;
+    transition: 0.3s !important;
+  }
+
+  .btn-login:hover{
+    border-color: #fff !important;
+    color: #b5405b !important;
+    background: #b5405b83 !important;
+  }
+  
+  .btn-google {
+    color: white !important;
+    background-color: #ea4335;
+  }
+  
+  .btn-facebook {
+    color: white !important;
+    background-color: #3b5998;
+  }
+
+  .form-control:focus {
+  border-color: #b5405b83 !important;
+  box-shadow: inset 0 1px 1px #b5405b83, 0 0 8px #b5405b83 !important;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card border-0 shadow rounded-3 my-5">
+            <div class="card-body p-4 p-sm-5">
+              <h3 class="card-title text-center mb-5 fs-20">Sign In</h3>
+              
+              <form action="/admin/login" method="post">
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                  <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  <label for="floatingPassword">Password</label>
+                </div>
+                <div class="d-grid">
+                  <button class="btn btn-login text-uppercase fw-bold" type="submit">Sign in</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
