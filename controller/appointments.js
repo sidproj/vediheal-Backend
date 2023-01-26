@@ -23,7 +23,7 @@ module.exports.user_appointments_get = async (req,res)=>{
 }
 
 module.exports.instructor_appointments_get = async (req,res)=>{
-    // try{
+    try{
         const appointments = await Appointment.find({ instructor_id:res.user.id,is_deleted:false});
         for(let i=0;i<appointments.length;i++){
             await appointments[i].populate({
@@ -37,9 +37,9 @@ module.exports.instructor_appointments_get = async (req,res)=>{
         }
 
         res.send(appointments);
-    // }catch(err){
-    //     res.send({error:"Error. Please try again later!"});
-    // }
+    }catch(err){
+        res.send({error:"Error. Please try again later!"});
+    }
 }
 
 module.exports.set_appointments_post = async(req,res)=>{

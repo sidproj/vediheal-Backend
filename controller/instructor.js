@@ -37,8 +37,8 @@ const handleErrors = (err) => {
 
 
 module.exports.login_post = async (req, res) => {
-    const { email, password } = req.body;
     try {
+        const { email, password } = req.body;
         const instructor = await Instructor.login(email, password);
         const jwtToken = createJWT(instructor._id);
 

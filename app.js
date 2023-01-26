@@ -81,5 +81,5 @@ app.use("/reiki",reiki);
 app.use("/profile",profile);
 app.use("/register",register);
 app.use("/login",login);
-app.use("/aapointment",appointment);
+app.use("/apointment",appointment);
 //----------------------
