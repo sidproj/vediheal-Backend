@@ -1,10 +1,15 @@
 {
-  "name": "nonsensestore",
+  "name": "vediheal",
   "version": "0.0.0",
   "private": true,
+  "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node index.js",
     "dev": "nodemon index.js --ext *"
+  },
+  "engines": {
+    "node": "16.13.0",
+    "npm": "8.13.2"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
