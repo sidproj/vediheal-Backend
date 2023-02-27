@@ -40,7 +40,7 @@ app.use(
   })
 );
 
-app.use(express.static(__dirname + "public"));
+app.use(express.static(__dirname + "/public"));
 
 //database connection with mongoose
 mongoose.set('strictQuery', false);
@@ -64,7 +64,6 @@ app.set("view engine", "ejs");
 app.use(cors());
 
 app.use(logger("dev"));
-app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
