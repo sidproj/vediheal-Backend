@@ -25,6 +25,9 @@ const profile = require("./routes/profile");
 const password = require("./routes/password");
 const addData = require("./routes/addData");
 const admin = require("./routes/admin");
+const review = require("./routes/review");
+const schedule = require("./routes/schedule");
+const coupon = require("./routes/coupon");
 
 const app = express();
 
@@ -71,15 +74,19 @@ app.use(cookieParser());
 
 // app.use("/addData",addData);
 
-app.use("/password",password);
-app.use("/admin",admin);
+app.use("/review",review);
 //testing---------------
 //----------------------
 
 //done------------------
+
+app.use("/password",password);
+app.use("/admin",admin);
 app.use("/reiki",reiki);
 app.use("/profile",profile);
 app.use("/register",register);
 app.use("/login",login);
-app.use("/apointment",appointment);
+app.use("/appointment",appointment);
+app.use("/schedule",schedule);
+app.use("/coupon",coupon);
 //----------------------

@@ -39,6 +39,9 @@ router.post("/add/reiki",requireAuthAdmin,adminController.add_reiki_post);
 //appointments
 router.get("/appointments",requireAuthAdmin,adminController.appointments_get);
 router.get("/appointments/:id",requireAuthAdmin,adminController.appointment_get);
+router.get("/pendingAppointments",requireAuthAdmin,adminController.pending_appointments_get);
+router.get("/editAppointments/:id",requireAuthAdmin,adminController.edit_appointments_get);
+router.post("/editAppointments/:id",requireAuthAdmin,adminController.edit_appointments_post);
 
 //benifits
 router.get("/benifits",requireAuthAdmin,adminController.benifits_get);
@@ -46,6 +49,12 @@ router.get("/benifits/:id",requireAuthAdmin,adminController.benifit_get);
 router.post("/add/benifit",requireAuthAdmin,adminController.add_benifit);
 router.post("/edit/benifit/:id",requireAuthAdmin,adminController.edit_benifit);
 router.get("/change/benifit/:id",requireAuthAdmin,adminController.change_benifit_status);
+
+router.get("/coupon",requireAuthAdmin,adminController.coupon_get);
+router.post("/add/coupon",requireAuthAdmin,adminController.add_coupon);
+router.get("/coupon/:id",requireAuthAdmin,adminController.single_coupon_get);
+router.post("/edit/coupon/:id",requireAuthAdmin,adminController.edit_coupon);
+router.get("/change/coupon/:id",requireAuthAdmin,adminController.change_coupon_status);
 
 
 module.exports = router;

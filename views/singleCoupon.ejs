@@ -1,0 +1,67 @@
+<%- include("./nestedHeader.ejs") %>
+<!-- End of header -->
+
+<div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+<center>
+<section id="content-types">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h1>Coupon Info</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/edit/coupon/<%= coupon.id%>" method="post">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Coupon code</label>
+                                <div class="fm-ele">
+                                    <h6>Coupon code</h6>
+                                    <input type="text"  class="form-control inpt-info" value="<%= coupon.code%>" id="code" name="code" >
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Coupon amount</label>
+                                <div class="fm-ele">
+                                    <h6>Coupon code</h6>
+                                    <input type="text"  class="form-control inpt-info" value="<%= coupon.discount_amt%>" id="discount_amt" name="discount_amt" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="sr-only">Is removed</label>
+                                <div class="fm-ele">
+                                    <div>
+                                        <% if(coupon.is_deleted){ %>
+                                        <a href="/admin/change/coupon/<%= coupon.id%>"><button type="button" class="btn mr-1 mb-1 btn-dark">Add</button></a><%}else{%>
+                                        <a href="/admin/change/coupon/<%= coupon.id%>"><button type="button" class="btn mr-1 mb-1 btn-warning">Remove</button></a>
+                                        <%}%>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</center>
+</div>
+</div>
+</div>
+</script>
+
+<!-- start of footer -->
+<%- include("./nestedFooter.ejs") %>

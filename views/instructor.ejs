@@ -49,6 +49,45 @@
                                     <input type="text"  class="form-control inpt-info" value="<%= instructor.phone_no%>" id="phone_no" name="phone_no" >
                                 </div>
                             </div>
+                            
+                            <div class="form-group">
+                                <label class="sr-only">Description</label>
+                                <div class="fm-ele">
+                                    <h6>Description</h6>
+                                    <div>
+                                        <textarea id="expectation" rows="5" class="form-control square" name="description" spellcheck="false">
+                                            <%= instructor.description%>
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group fm-ele">
+                                <h6>Reikies</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Reikies</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%for(let i=0;i<reikies.length;i++){%>
+                                                <tr>
+                                                    <td>
+                                                        <% if( instructor.instructorReikis.includes(reikies[i].id)){%>
+                                                            <input type="checkbox" id="reikies" name="reikies" value="<%= reikies[i].id %>" checked>
+                                                            <label for="reikies"> <%= reikies[i].name %> </label>
+                                                        <%}else{%>
+                                                            <input type="checkbox" id="reikies" name="reikies" value="<%= reikies[i].id %>">
+                                                            <label for="reikies"> <%= reikies[i].name %> </label>
+                                                        <%}%>
+                                                    </td>
+                                                </tr>
+                                            <%}%>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="sr-only">Instructor Access</label>
                                 <div class="fm-ele">

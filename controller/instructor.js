@@ -107,11 +107,12 @@ module.exports.profile_get = async (req, res) => {
       const phone_no = instructor.phone_no;
       const email = instructor.email;
       const reikies = instructor.instructorReikis;
+      const description = instructor.description;
 
 
 
       res.send({
-          instructor: { first_name, last_name, phone_no, email,reikies },
+          instructor: { first_name, last_name, phone_no, email,reikies,description },
       });
     }catch(error){
         res.send({"error":"error","message":"No user found!"});
@@ -126,6 +127,8 @@ module.exports.profile_post = async(req,res)=>{
         instructor.last_name = req.body.last_name;
         instructor.phone_no = req.body.phone_no;
         instructor.email = req.body.email;
+        instructor.description = req.body.description;
+
         await instructor.save();
         res.send({instructor:{
             first_name:instructor.first_name,
@@ -182,20 +185,20 @@ module.exports.get_all_instructors_by_reiki = async (req,res)=>{
     }
 }
 
-module.exports.set_time_slots = async (req,res)=>{
-    try{
-        console.log(req.body);
-        const appointment = await Appointment.findById(req.body.appointment_id);
+// module.exports.set_time_slots = async (req,res)=>{
+//     try{
+//         console.log(req.body);
+//         const appointment = await Appointment.findById(req.body.appointment_id);
 
-        if(!appointment) throw Error("No appointment found!");
-        appointment.slots = req.body.slots;
-        await appointment.save();
-        res.send(await Appointment.findById(req.body.appointment_id));
+//         if(!appointment) throw Error("No appointment found!");
+//         appointment.slots = req.body.slots;
+//         await appointment.save();
+//         res.send(await Appointment.findById(req.body.appointment_id));
         
-    }catch(error){
-        res.send({error:error.message})
-    }
-}
+//     }catch(error){
+//         res.send({error:error.message})
+//     }
+// }
 
 
 module.exports.change_password = async (req,res)=>{

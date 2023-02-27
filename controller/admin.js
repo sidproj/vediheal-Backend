@@ -5,6 +5,7 @@ const Benifit = require("../models/benifits");
 const Appointment = require("../models/appointments");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Coupon = require("../models/coupon");
 
 
 const createJWT = (id) => {
@@ -165,17 +166,19 @@ module.exports.instructors_get = async (req,res)=>{
     try{
         const admin = await User.findById(res.user.id);
         const instructors = await Instructor.find();
-            res.render("instructors",{instructors,admin});
-        }catch(error){
-            res.render("error",{error:error.message,instruction:"Try again later."});
-        }
+        res.render("instructors",{instructors,admin});
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
 }
 
 module.exports.instructor_get = async (req,res)=>{
     try{
         const admin = await User.findById(res.user.id);
         const instructor = await Instructor.findById(req.params.id);
-        res.render("instructor",{instructor,admin});
+        const reikies = await Reiki.find({is_deleted:false});
+        console.log(instructor);
+        res.render("instructor",{instructor,admin,reikies});
     }catch(error){
         res.render("error",{error:error.message,instruction:"Try again later."});
     }
@@ -185,11 +188,14 @@ module.exports.edit_instructor = async (req,res)=>{
     try{
         const instructor = await Instructor.findById(req.params.id);
         if(!instructor) throw new Error("No user found!");
+        console.log(req.body);
 
         instructor.first_name = req.body.first_name;
         instructor.last_name = req.body.last_name;
         instructor.email = req.body.email;
         instructor.phone_no = req.body.phone_no;
+        instructor.instructorReikis = req.body.reikies;
+        instructor.description = req.body.description;
         await instructor.save();
 
         res.redirect(`/admin/instructors/${instructor.id}`);
@@ -320,7 +326,7 @@ module.exports.add_reiki_post = async (req,res)=>{
 module.exports.appointments_get = async (req,res)=>{
     try{
         const admin = await User.findById(res.user.id);
-        const appointments = await Appointment.find();
+        const appointments = await Appointment.find({is_appointed:true});
 
         for(let i=0;i<appointments.length;i++){
             await appointments[i].populate({
@@ -367,28 +373,73 @@ module.exports.appointment_get = async (req,res)=>{
     }
 }
 
-// module.exports.edit_appointments = async (req,res)=>{
-//     try{
-//         const admin = await User.findById(res.user.id);
-//         if(!admin || !admin.is_admin)throw new Error("No admin found!");
+module.exports.pending_appointments_get = async (req,res)=>{
+    try{
+        const admin = await User.findById(res.user.id);
 
-//         const appointment = await Appointment.findById(req.body.appointment_id);
-//         if(!appointment) throw Error("Now appointment found");
+        const appointments = await Appointment.find({is_appointed:false});
 
-//         appointment.start_time = req.body.start_time;
-//         appointment.end_time = req.body.end_time;
-//         appointment.user_id = req.body.user_id;
-//         appointment.instructor_id = req.body.instructor_id;
-//         appointment.reiki_id = req.body.reiki_id;
-//         appointment.price = req.body.price;
+        for(let i=0;i<appointments.length;i++){
+            await appointments[i].populate({
+                path: "user_id",
+                model: User,
+            });
+            await appointments[i].populate({
+                path:"reiki_id",
+                model: Reiki, 
+            });
+        }
 
-//         await appointment.save();
-//         res.send(appointment);
+        res.render("editAppointments",{admin,appointments,admin});   
+    }catch(error){
+        console.log(error);
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
 
-//     }catch(error){
-//         res.send({error:"Error while setting user"})
-//     }   
-// }
+module.exports.edit_appointments_get = async (req,res)=>{
+    try{
+        const admin = await User.findById(res.user.id);
+
+        const appointment = await Appointment.findById(req.params.id);
+        if(!appointment) throw Error("Now appointment found");
+        const instructors = await Instructor.find({"instructorReikis":appointment.reiki_id});
+
+        await appointment.populate({
+            path: "user_id",
+            model: User,
+        });
+        await appointment.populate({
+            path:"reiki_id",
+            model: Reiki, 
+        });
+
+        res.render("editAppointment",{admin,appointment,instructors});
+
+    }catch(error){
+        res.send({error:error.message})
+    }   
+}
+
+module.exports.edit_appointments_post = async (req,res)=>{
+    try{
+        // const admin = await User.findById(res.user.id);
+
+        const appointment = await Appointment.findById(req.params.id);
+        if(!appointment) throw Error("Now appointment found");
+
+        appointment.instructor_id = req.body.instructor_id;
+        appointment.meeting_link = req.body.meeting;
+        appointment.is_appointed = true;
+        await appointment.save();
+        // console.log(req.body);
+        console.log(await Appointment.findById(req.params.id));
+        res.redirect(`/admin/editAppointments/${appointment.id}`);
+
+    }catch(error){
+        res.send({error:"Error while setting user"})
+    }   
+}
 
 // module.exports.delete_appointment = async (req,res)=>{
 //     try{
@@ -460,6 +511,62 @@ module.exports.add_benifit = async (req,res)=>{
         })
         await benifit.save();
         res.redirect(`/admin/benifits`);
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.coupon_get = async (req,res)=>{
+    try{
+        const admin = await User.findById(res.user.id);
+        const coupon = await Coupon.find();
+        res.render("coupon",{coupon,admin});
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.add_coupon = async (req,res)=>{
+    try{
+        const coupon = Coupon({
+            code:req.body.code,
+            discount_amt:req.body.discount_amt
+        });
+        await coupon.save();
+        res.redirect("/admin/coupon");
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.single_coupon_get = async (req,res)=>{
+    try{
+        const coupon = await Coupon.findById(req.params.id);
+        const admin = await User.findById(res.user.id);
+        res.render("singleCoupon",{admin,coupon});
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.change_coupon_status = async (req,res)=>{
+    try{
+        const coupon = await Coupon.findById(req.params.id);
+        coupon.is_deleted  = coupon.is_deleted ^ 1;
+        await coupon.save();
+        res.redirect(`/admin/coupon/${coupon.id}`);
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.edit_coupon = async (req,res)=>{
+    try{
+        const coupon = await Coupon.findById(req.params.id);
+        coupon.code = req.body.code;
+        coupon.discount_amt = req.body.discount_amt;
+        await coupon.save();
+        res.redirect(`/admin/coupon/${coupon.id}`);
     }catch(error){
         res.render("error",{error:error.message,instruction:"Try again later."});
     }

@@ -10,6 +10,5 @@ router.post("/instructor",requireAuth,Appointment.instructor_appointments_get);
 
 router.post("/set",requireAuth,Appointment.set_appointments_post);
 
-router.post("/slots",requireAuth,Instructor.set_time_slots);
 
 module.exports = router;

@@ -3,7 +3,6 @@ const Instructor = require("../models/instructor");
 
 
 //for mailing apis;
-const hbs = require("nodemailer-express-handlebars");
 const nodemailer = require("nodemailer");
 
 module.exports.user_forgot_password_post = async (req,res)=>{
