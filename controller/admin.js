@@ -15,6 +15,7 @@ const createJWT = (id) => {
 //authentication
 module.exports.login_get = async (req,res)=>{
     try{
+        console.log(0)
         res.render("login");
     }catch(error){
         res.render("error",{error:error.message,instruction:"Try again later."});
