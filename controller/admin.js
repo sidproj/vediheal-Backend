@@ -531,7 +531,8 @@ module.exports.add_coupon = async (req,res)=>{
     try{
         const coupon = Coupon({
             code:req.body.code,
-            discount_amt:req.body.discount_amt
+            discount_amt:req.body.discount_amt,
+            min_amt:req.body.min_amt
         });
         await coupon.save();
         res.redirect("/admin/coupon");
@@ -566,6 +567,7 @@ module.exports.edit_coupon = async (req,res)=>{
         const coupon = await Coupon.findById(req.params.id);
         coupon.code = req.body.code;
         coupon.discount_amt = req.body.discount_amt;
+        coupon.min_amt = req.body.min_amt;
         await coupon.save();
         res.redirect(`/admin/coupon/${coupon.id}`);
     }catch(error){

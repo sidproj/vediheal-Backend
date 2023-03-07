@@ -9,6 +9,9 @@ const couponSchema = new mongoose.Schema({
         type:Number,
         require:[true,"Please enter discount amount"]
     },
+    min_amt:{
+        type:Number,
+    },
     is_deleted:{
         type:Boolean,
         default:false
