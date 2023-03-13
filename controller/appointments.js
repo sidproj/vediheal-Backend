@@ -23,7 +23,12 @@ module.exports.user_appointments_get = async (req,res)=>{
                 path:"reiki_id",
                 model: Reiki, 
             });
+            await appointments[i].populate({
+                path:"time_slot",
+                model: Schedule,
+            })
         }
+        console.log(appointments);
         res.send(appointments);
     }catch(err){
         res.send({error:"Error. Please try again later!"});
