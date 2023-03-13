@@ -9,6 +9,8 @@ router.post("/user",requireAuth,Appointment.user_appointments_get);
 router.post("/instructor",requireAuth,Appointment.instructor_appointments_get);
 
 router.post("/set",requireAuth,Appointment.set_appointments_post);
+router.post("/changeLink",requireAuth,Appointment.set_meeting_link);
+// router.get("/",Appointment.testMail);
 
 
 module.exports = router;

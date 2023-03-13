@@ -4,7 +4,8 @@ const scheduleController = require("../controller/schedule");
 
 const { requireAuth } = require("../middleware/authMiddleware");
 
-router.post("/",requireAuth,scheduleController.get_instructor_schedules);
+router.post("/",requireAuth,scheduleController.get_reiki_schedules);
+router.post("/instructor",requireAuth,scheduleController.get_instructor_schedules)
 router.post("/createSchedule",requireAuth,scheduleController.create_schedule);
 router.post("/deleteSchedule",requireAuth,scheduleController.delete_schedule);
 
