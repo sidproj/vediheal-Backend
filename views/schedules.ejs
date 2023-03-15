@@ -1,0 +1,57 @@
+
+
+<%- include('./header.ejs'); %>
+
+
+<!-- Statistics -->
+<div class="row match-height">
+  
+  <div class="col-12">
+      <div class="card">
+          <div class="card-header">
+              <h4 class="card-title">Coupons</h4>
+              <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+          </div>
+          <div class="card-content collapse show">
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th class="card-title">Sr no.</th>
+                                  <th class="card-title">Scheduler</th>
+                                  <th class="card-title">Start Date</th>
+                                  <th class="card-title">Start Time</th>
+                                  <th class="card-title">Action</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <!-- loop -->
+                              <% for(let i=0;i<schedules.length;i++){%>
+                                <tr>
+                                  <th class="card-subtitle" scope="row"><%= i+1%></th>
+                                  <td class="card-subtitle"><%= schedules[i].instructor_id.email%></td>
+                                  <td class="card-subtitle"><%= schedules[i].start_time.toISOString().slice(0, 10) %></td>
+                                  <td class="card-subtitle"><%= schedules[i].start_time.getHours() + " : " + schedules[i].start_time.getMinutes() %></td>
+                                  <td>
+                                      <a href="/admin/schedule/<%= schedules[i].id%>"><button type="button" class="btn mr-1 mb-1 btn-dark btn-sm"><i class="la la-edit"></i></button></a>
+                                  </td>
+                                </tr>
+                              <%}%>
+                              
+                              <!-- loop -->
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!--/ Statistics -->
+      </div>
+    </div>
+  </div>
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+<%- include('./footer.ejs'); %>

@@ -56,5 +56,10 @@ router.get("/coupon/:id",requireAuthAdmin,adminController.single_coupon_get);
 router.post("/edit/coupon/:id",requireAuthAdmin,adminController.edit_coupon);
 router.get("/change/coupon/:id",requireAuthAdmin,adminController.change_coupon_status);
 
+router.get("/schedule",requireAuthAdmin,adminController.schedule_get);
+router.get("/schedule/:id",requireAuthAdmin,adminController.schedule_get_single);
+router.post("/edit/schedule/:id",requireAuthAdmin,adminController.edit_schedule);
+router.get("/change/schedule/:id",requireAuthAdmin,adminController.change_schedule_delete);
+
 
 module.exports = router;

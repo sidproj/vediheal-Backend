@@ -1,0 +1,84 @@
+<%- include("./nestedHeader.ejs") %>
+<!-- End of header -->
+
+<div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
+
+<center>
+<section id="content-types">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h1>Schedule Info</h1>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/edit/schedule/<%= schedule.id%>" method="post">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Schedule id</label>
+                                <div class="fm-ele">
+                                    <h6>Schedule id</h6>
+                                    <input type="text"  class="form-control inpt-info" value="<%= schedule.id%>" id="code" name="code" >
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">Schedule Instructors ID</label>
+                                <div class="fm-ele">
+                                    <h6>schedule Instructors ID</h6>
+                                    <input type="text"  class="form-control inpt-info" value="<%= schedule.instructor_id.email%>" id="discount_amt" name="discount_amt" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">schedule Starting Date</label>
+                                <div class="fm-ele">
+                                    <h6>Minimum Starting Date</h6>
+                                    <input type="date"  class="form-control inpt-info" value="<%= schedule.start_time.toISOString().slice(0, 10)%>" id="date" name="date" >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="donationinput1" class="sr-only">schedule Starting Time</label>
+                                <div class="fm-ele">
+                                    <h6>Minimum Starting Time</h6>
+                                    <%if((""+schedule.start_time.getMinutes()).length == 1) {console.log(1);%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= schedule.start_time.getHours() + ":0" + schedule.start_time.getMinutes()%>" id="time" name="time" >
+                                    <%}else{ console.log(2);%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= schedule.start_time.getHours() + ":" + schedule.start_time.getMinutes()%>" id="time" name="time" >
+                                    <%}%>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="sr-only">Is removed</label>
+                                <div class="fm-ele">
+                                    <div>
+                                        <a href="/admin/change/schedule/<%= schedule.id%>"><button type="button" class="btn mr-1 mb-1 btn-warning">Remove</button></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</center>
+</div>
+</div>
+</div>
+</script>
+
+<!-- start of footer -->
+<%- include("./nestedFooter.ejs") %>

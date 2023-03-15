@@ -6,6 +6,7 @@ const Appointment = require("../models/appointments");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Coupon = require("../models/coupon");
+const Schedule = require("../models/schedule");
 
 
 const createJWT = (id) => {
@@ -570,6 +571,71 @@ module.exports.edit_coupon = async (req,res)=>{
         coupon.min_amt = req.body.min_amt;
         await coupon.save();
         res.redirect(`/admin/coupon/${coupon.id}`);
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.schedule_get = async (req,res)=>{
+    try{
+        const admin = await User.findById(res.user.id);
+        const schedules = await Schedule.find();
+
+        for(let i=0;i<schedules.length;i++){
+            await schedules[i].populate({
+                path:"instructor_id",
+                model:Instructor
+            });
+        }
+
+        res.render("schedules",{schedules,admin});
+
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.schedule_get_single = async (req,res)=>{
+    try{
+        const admin = await User.findById(res.user.id);
+        const schedule = await Schedule.findById(req.params.id);
+
+        await schedule.populate({
+            path:"instructor_id",
+            model:Instructor
+        });
+
+        res.render("schedule",{schedule,admin});
+
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.edit_schedule = async (req,res)=>{
+    try{
+        const schedule = await Schedule.findById(req.params.id);
+
+        console.log(req.body);
+        const date = new Date(req.body.date);
+
+        date.setHours(req.body.time.split(':')[0]);
+        date.setMinutes(req.body.time.split(':')[1]);
+
+        schedule.start_time=date;
+        await schedule.save();
+
+        res.redirect(`/admin/schedule/${schedule.id}`);
+    }catch(error){
+        res.render("error",{error:error.message,instruction:"Try again later."});
+    }
+}
+
+module.exports.change_schedule_delete = async (req,res)=>{
+    try{
+        const schedule = await Schedule.findById(req.params.id);
+        schedule.remove();
+        res.redirect('/admin/schedule');
     }catch(error){
         res.render("error",{error:error.message,instruction:"Try again later."});
     }
