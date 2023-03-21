@@ -35,6 +35,7 @@ app.options('*', cors());
 app.use(
   cors({
     origin: [
+      '*',
       "https://vediheal.vercel.app/",
     ],
   })
