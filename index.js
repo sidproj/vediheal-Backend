@@ -32,14 +32,14 @@ const coupon = require("./routes/coupon");
 const app = express();
 
 app.options('*', cors());
-app.use(
-  cors({
-    origin: [
-      '*',
-      "https://vediheal.vercel.app/",
-    ],
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       '*',
+//       // "https://vediheal.vercel.app/",
+//     ],
+//   })
+// );
 
 app.use(express.static(__dirname + "/public"));
 
