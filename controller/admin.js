@@ -416,6 +416,11 @@ module.exports.edit_appointments_get = async (req,res)=>{
             model: Reiki, 
         });
 
+        await appointment.populate({
+            path:"time_slot",
+            model:Schedule,
+        });
+
         res.render("editAppointment",{admin,appointment,instructors});
 
     }catch(error){

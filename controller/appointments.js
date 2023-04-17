@@ -12,7 +12,6 @@ module.exports.user_appointments_get = async (req,res)=>{
         const appointments = await Appointment.find({ 
             user_id:res.user.id,
             is_deleted:false,
-            is_appointed:req.body.is_appointed
         });
         for(let i=0;i<appointments.length;i++){
             await appointments[i].populate({

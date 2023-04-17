@@ -7,6 +7,7 @@ module.exports.check_coupon = async (req,res)=>{
         console.log(coupons);
         if(coupons.length==0 || coupons == undefined){
             res.send({status:false,message:"Not available"});
+            console.log(0);
         }
         else{
             if(coupons[0].min_amt <= req.body.minAmount){
