@@ -2,6 +2,7 @@ const Coupon = require("../models/coupon");
 
 module.exports.check_coupon = async (req,res)=>{
     try{
+        console.log("here");
         console.log(req.body);
         const coupons = await Coupon.find({code:req.body.code,is_deleted:false});
         console.log(coupons);

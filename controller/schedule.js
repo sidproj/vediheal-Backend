@@ -35,12 +35,17 @@ module.exports.get_instructor_schedules = async (req,res)=>{
 module.exports.get_reiki_schedules = async (req,res)=>{
     try{
         console.log(req.body);
+        const currentDate = new Date().toISOString();
+
         const instructors = await Instructor.find({"instructorReikis":req.body.reiki});
         const instructor_ids=[];
         instructors.map(inst =>{
             instructor_ids.push(inst.id);
         });
-        const schedule = await Schedule.find({instructor_id: {$in:instructor_ids},is_booked:false});
+        const schedule = await Schedule.find({instructor_id: {$in:instructor_ids},
+                                                is_booked:false,
+                                                start_time:{$gte:currentDate}
+                                            });
         console.log(schedule);
         res.send(schedule);
     }catch(err){
