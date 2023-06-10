@@ -95,7 +95,7 @@
                             <label for="donationinput1" class="sr-only">Appointment Starting Date</label>
                             <div class="fm-ele">
                                 <h6>Appointment Starting Date</h6>
-                                <input type="date"  class="form-control inpt-info" value="<%= appointment.time_slot?.start_time?.toISOString().slice(0, 10)%>" id="date" name="date" >
+                                <input type="date"  class="form-control inpt-info" value="<%= appointment.start_time?.toISOString().slice(0, 10)%>" id="date" name="date" >
                             </div>
                         </div>
 
@@ -103,10 +103,10 @@
                             <label for="donationinput1" class="sr-only">Appoitnment Starting Time</label>
                             <div class="fm-ele">
                                 <h6>Appointment Starting Time</h6>
-                                <%if((""+appointment.time_slot?.start_time?.getMinutes()).length == 1) {%>
-                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.time_slot?.start_time?.getHours() + ":0" + appointment.time_slot?.start_time?.getMinutes()%>" id="time" name="time" >
+                                <%if((""+appointment.start_time?.getMinutes()).length == 1) {%>
+                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
                                 <%}else{%>
-                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.time_slot?.start_time?.getHours() + ":" + appointment.time_slot?.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
                                 <%}%>
                             </div>
                         </div>

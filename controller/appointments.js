@@ -79,7 +79,8 @@ module.exports.set_appointments_post = async(req,res)=>{
             reiki_id:req.body.reiki,
             price:req.body.price,
             time_slot:req.body.schedule_id,
-            instructor_id:schedule.instructor_id
+            instructor_id:schedule.instructor_id,
+            start_time:req.body.start_time,
         });
 
         schedule.is_booked=true;
