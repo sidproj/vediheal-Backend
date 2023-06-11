@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Coupon = require("../models/coupon");
 const Schedule = require("../models/schedule");
+const nodemailer = require("nodemailer");
 
 
 const createJWT = (id) => {
@@ -439,12 +440,87 @@ module.exports.edit_appointments_post = async (req,res)=>{
         appointment.meeting_link = req.body.meeting;
         appointment.is_appointed = true;
         await appointment.save();
+
+        await appointment.populate({
+            path: "user_id",
+            model: User,
+        });
+        await appointment.populate({
+            path:"reiki_id",
+            model: Reiki, 
+        });
+        await appointment.populate({
+            path: "instructor_id",
+            model: Instructor,
+        });
         // console.log(req.body);
-        console.log(await Appointment.findById(req.params.id));
+
+        //send updated details to user and instructor
+
+        //send to user first
+        
+        const receiverClient = appointment.user_id.email;
+        const subjectClient = "Appointment booking Updates.";
+        const htmlClient = `<p>Your appointment is booked with instructor: 
+            <b> ${appointment.instructor_id.first_name} ${appointment.instructor_id.last_name}</b><br>
+            email: <b>${appointment.instructor_id.email}</b><br>
+            for reikie: <b>${appointment.reiki_id.name}</b><br>
+            on: <b> ${appointment.start_time}</b>
+        </p>`;
+        const transporter = nodemailer.createTransport({
+            service: "hotmail",
+            auth: {
+              user: process.env.OUTLOOK_ID,
+              pass: process.env.OUTLOOK_APP_PASSWORD,
+            },
+        });
+        const mailOptions = {
+            from: `Vediheal ${process.env.OUTLOOK_ID}`, // sender address
+            to: receiverClient, // list of receivers
+            subject: subjectClient,
+            html:htmlClient,
+        };
+
+        transporter.sendMail(mailOptions,async (err,info)=>{
+            if(err) throw Error(err);
+            // send mail to instructor
+            const receiverInstructor = appointment.instructor_id.email;
+            const subjectInstructor = "New appointment booked.";
+            const htmlInstructor = `<p>Your appointment is booked with Client: 
+                <b> ${appointment.user_id.first_name} ${appointment.user_id.last_name}</b><br>
+                email: <b>${appointment.user_id.email}</b><br>
+                for reikie: <b>${appointment.reiki_id.name}</b><br>
+                on: <b> ${appointment.start_time}</b><br>
+                meeting link: <b> ${appointment.meeting_link}</b><br>
+            </p>`;
+            // await sendMail.sendMail(receiverInstructor,subjectInstructor,htmlInstructor);
+            
+            const transporter1 = nodemailer.createTransport({
+                service: "hotmail",
+                auth: {
+                user: process.env.OUTLOOK_ID,
+                pass: process.env.OUTLOOK_APP_PASSWORD,
+                },
+            });
+            const mailOptions1 = {
+                from: `Vediheal ${process.env.OUTLOOK_ID}`, // sender address
+                to: receiverInstructor, // list of receivers
+                subject: subjectInstructor,
+                html:htmlInstructor,
+            };
+
+            transporter1.sendMail(mailOptions1,async (err,info)=>{
+                if(err) throw Error(err);
+                console.log(info);
+            });
+            
+        });
+
+        //end and redirect
         res.redirect(`/admin/editAppointments/${appointment.id}`);
 
     }catch(error){
-        res.send({error:"Error while setting user"})
+        res.send({error:"Error while setting user",message:error.message});
     }   
 }
 
