@@ -66,7 +66,7 @@ module.exports.set_appointments_post = async(req,res)=>{
     try{
         const user = await User.findById(res.user.id);
         const schedule = await Schedule.findById(req.body.schedule_id);
-        const instructor = await Instructor.findById(schedule.instructor_id);
+        // const instructor = await Instructor.findById(schedule.instructor_id);
 
         const reiki = await Reiki.findById(req.body.reiki);
 
@@ -78,27 +78,29 @@ module.exports.set_appointments_post = async(req,res)=>{
             user_id:res.user.id,
             reiki_id:req.body.reiki,
             price:req.body.price,
-            time_slot:req.body.schedule_id,
-            instructor_id:schedule.instructor_id,
+            // time_slot:req.body.schedule_id,
+            // instructor_id:schedule.instructor_id,
             start_time:req.body.start_time,
         });
 
-        schedule.is_booked=true;
-        
-        await schedule.save();
+        // schedule.is_booked=true;
         await appointment.save();
 
         // send mail to client
         const receiverClient = user.email;
-        const subjectClient = "Appointment booked success.";
-        const htmlClient = `<p>Your appointment is booked with instructor: 
-            <b> ${instructor.first_name} ${instructor.last_name}</b><br>
-            email: <b>${instructor.email}</b><br>
+        const subjectClient = "Appointment booked successfully.";
+        // const htmlClient = `<p>Your appointment is booked with instructor: 
+        //     <b> ${instructor.first_name} ${instructor.last_name}</b><br>
+        //     email: <b>${instructor.email}</b><br>
+        //     for reikie: <b>${reiki.name}</b><br>
+        //     on: <b> ${schedule.start_time}</b>
+        // </p>`;
+        
+        const htmlClient = `<p>Your appointment is booked 
             for reikie: <b>${reiki.name}</b><br>
-            on: <b> ${schedule.start_time}</b>
+            Your instructor will be alloted soon.
         </p>`;
         // await sendMail.sendMail(receiverClient,subjectClient,htmlClient);
-        console.log("hello");
         const transporter = nodemailer.createTransport({
             service: "hotmail",
             auth: {
@@ -116,41 +118,37 @@ module.exports.set_appointments_post = async(req,res)=>{
         transporter.sendMail(mailOptions,async (err,info)=>{
             if(err) throw Error(err);
             //send mail to instructor
-            console.log(info);
-            const receiverInstructor = instructor.email;
-            const subjectInstructor = "Appointment booked success.";
-            const htmlInstructor = `<p>Your appointment is booked with Client: 
-                <b> ${user.first_name} ${user.last_name}</b><br>
-                email: <b>${user.email}</b><br>
-                for reikie: <b>${reiki.name}</b><br>
-                on: <b> ${schedule.start_time}</b>
-            </p>`;
-            // await sendMail.sendMail(receiverInstructor,subjectInstructor,htmlInstructor);
-            console.log("hello");
-            const transporter1 = nodemailer.createTransport({
-                service: "hotmail",
-                auth: {
-                user: process.env.OUTLOOK_ID,
-                pass: process.env.OUTLOOK_APP_PASSWORD,
-                },
-            });
-            const mailOptions1 = {
-                from: `Vediheal ${process.env.OUTLOOK_ID}`, // sender address
-                to: receiverInstructor, // list of receivers
-                subject: subjectInstructor,
-                html:htmlInstructor,
-            };
+            // const receiverInstructor = instructor.email;
+            // const subjectInstructor = "Appointment booked success.";
+            // const htmlInstructor = `<p>Your appointment is booked with Client: 
+            //     <b> ${user.first_name} ${user.last_name}</b><br>
+            //     email: <b>${user.email}</b><br>
+            //     for reikie: <b>${reiki.name}</b><br>
+            //     on: <b> ${schedule.start_time}</b>
+            // </p>`;
+            // // await sendMail.sendMail(receiverInstructor,subjectInstructor,htmlInstructor);
+            
+            // const transporter1 = nodemailer.createTransport({
+            //     service: "hotmail",
+            //     auth: {
+            //     user: process.env.OUTLOOK_ID,
+            //     pass: process.env.OUTLOOK_APP_PASSWORD,
+            //     },
+            // });
+            // const mailOptions1 = {
+            //     from: `Vediheal ${process.env.OUTLOOK_ID}`, // sender address
+            //     to: receiverInstructor, // list of receivers
+            //     subject: subjectInstructor,
+            //     html:htmlInstructor,
+            // };
 
-            transporter1.sendMail(mailOptions1,async (err,info)=>{
-                if(err) throw Error(err);
-                console.log(info);
-            });
+            // transporter1.sendMail(mailOptions1,async (err,info)=>{
+            //     if(err) throw Error(err);
+            //     console.log(info);
+            // });
             //
         });
         //
-
-        
-
         res.send({status:"success",appointment});
     }catch(err){
         console.log(err);
