@@ -28,6 +28,7 @@ const admin = require("./routes/admin");
 const review = require("./routes/review");
 const schedule = require("./routes/schedule");
 const coupon = require("./routes/coupon");
+const payment = require("./routes/payment");
 
 const app = express();
 
@@ -94,4 +95,5 @@ app.use("/login",login);
 app.use("/appointment",appointment);
 app.use("/schedule",schedule);
 app.use("/coupon",coupon);
+app.use("/payment",payment)
 //----------------------

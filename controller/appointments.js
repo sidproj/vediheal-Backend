@@ -81,6 +81,7 @@ module.exports.set_appointments_post = async(req,res)=>{
             // time_slot:req.body.schedule_id,
             // instructor_id:schedule.instructor_id,
             start_time:req.body.start_time,
+            stripe_payment_id:req.body.stripe_payment_id,
         });
 
         // schedule.is_booked=true;

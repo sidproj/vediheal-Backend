@@ -1,44 +1,28 @@
-const Razorpay = require("razorpay");
-const Appointment = require("../models/appointments");
+const stripe = require("stripe")('sk_test_51NNAjOSAZExnf8Z4CJ5G0znCQBrS9CXXETlM2vKBKmmzChQ3QDnkVblFJb3AqbCQNDu2Ntqs7DxEUynAJd1fWhxj00F0aUaMNY');
 
-module.exports.get_razorpay_key = async (req,res)=>{
-    res.send({key:process.env.RAZORPAY_KEY_ID});
-}
 
-module.exports.create_order = async (req,res)=>{
-    try{
-        const instance = new Razorpay({
-            key_id:process.env.RAZORPAY_KEY_ID,
-            key_secret:process.env.RAZORPAY_SECRET
-        });
-        const options = {
-            amount:req.body.amount,
-            currency:"INR"
-        };
-        const order = await instance.orders.create(options);
+module.exports.createPaymentIndent = async(req,res)=>{
 
-        if(!order) return res.status(500).send("Error occured!");
-        res.send(order);
 
-    }catch(error){
-        res.status(500).send(error);
+  /*
+    req.body.service {
+      price: amount (int)
     }
-}
+  */
 
-module.exports.pay_order = async (req,res)=>{
-    try{
-        const {amount,razorpayPaymentId,razorpayOrderId, razorpaySignature,appointmentId} = req.body;
-        const appointment = await Appointment.findById(appointmentId);
-        appointment.razorpay.paymentId = razorpayPaymentId;
-        appointment.razorpay.orderId = razorpayOrderId;
-        appointment.razorpay.signature = razorpaySignature;
-        await appointment.save();
-        res.send({
-            msg:"Payment successfull",
-            appointment:appointment
-        });
-    }catch(error){
-        console.log(error);
-        res.status(500).send(error);
-    }
+  console.log(req.body);
+  const service = req.body.service;
+  const paymentIntent = await stripe.paymentIntents.create({
+      amount: service.price * 100,
+      currency: "inr",
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    console.log(paymentIntent.client_secret);
+  
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
 }
