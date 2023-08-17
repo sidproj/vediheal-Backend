@@ -8,14 +8,6 @@ const logger = require("morgan");
 const cors = require("cors");
 
 
-//models
-const Instructor = require("./models/instructor");
-const User = require("./models/user");
-const Reiki = require("./models/reiki");
-const Appointment = require("./models/appointments");
-const Benifit = require("./models/benifits");
-
-
 //routes
 const reiki = require("./routes/reiki");
 const appointment = require("./routes/appointments");
@@ -23,7 +15,6 @@ const login = require("./routes/login");
 const register = require("./routes/register");
 const profile = require("./routes/profile");
 const password = require("./routes/password");
-const addData = require("./routes/addData");
 const admin = require("./routes/admin");
 const review = require("./routes/review");
 const schedule = require("./routes/schedule");
@@ -32,15 +23,15 @@ const payment = require("./routes/payment");
 
 const app = express();
 
-app.options('*', cors());
-// app.use(
-//   cors({
-//     origin: [
-//       '*',
-//       // "https://vediheal.vercel.app/",
-//     ],
-//   })
-// );
+// app.options('*', cors());
+app.use(
+  cors({
+    origin: [
+      '*',
+      // "https://vediheal.vercel.app/",
+    ],
+  })
+);
 
 app.use(express.static(__dirname + "/public"));
 
@@ -63,8 +54,6 @@ mongoose
 
 app.set('views', __dirname + '/views');
 app.set("view engine", "ejs");
-
-app.use(cors());
 
 app.use(logger("dev"));
 app.use(express.urlencoded());
