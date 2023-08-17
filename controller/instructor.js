@@ -44,7 +44,7 @@ module.exports.login_post = async (req, res) => {
 
         //res.cookie("jwt", jwtToken, { httpOnly: true });
         res.status(200).json({ 
-            message: "Login successful!",
+            instructor,
             jwt: jwtToken
         });
     } catch (err) {
@@ -115,7 +115,7 @@ module.exports.profile_get = async (req, res) => {
           instructor: { first_name, last_name, phone_no, email,reikies,description },
       });
     }catch(error){
-        res.send({"error":"error","message":"No user found!"});
+        res.send({error:"No Insturctor found!"});
     }
 };
 
@@ -130,12 +130,9 @@ module.exports.profile_post = async(req,res)=>{
         instructor.description = req.body.description;
 
         await instructor.save();
-        res.send({instructor:{
-            first_name:instructor.first_name,
-            last_name:instructor.last_name,
-            phone_no:instructor.phone_no,
-            email:instructor.email
-        }});
+        const jwtToken = createJWT(instructor._id);
+
+        res.send({instructor,jwt:jwtToken});
     }catch(error){
         res.send({"error":"error","message":"No user found!"});
     }
@@ -182,6 +179,71 @@ module.exports.get_all_instructors_by_reiki = async (req,res)=>{
         res.send(instructors);
     }catch(error){
         res.send({error:"No instructor found!"})
+    }
+}
+
+module.exports.get_instructor_reikis = async (req,res)=>{
+    try{
+        console.log(req.body);
+        const instructor = await Instructor.findById(res.user.id);
+
+        const reikies = await Reiki.find();
+        const instructorReikies={};
+        const result = [];
+
+        await instructor.populate({
+            path:"instructorReikis",
+            model:Reiki,
+        });
+
+
+        for(let i=0;i<reikies.length;i++){
+            instructorReikies[reikies[i].id] = {
+                name:reikies[i].name,
+                selected:false,
+            }
+        }
+        
+        for(let i=0;i<instructor.instructorReikis.length;i++){
+            const r = instructor.instructorReikis[i];
+            instructorReikies[r.id].selected = true;
+        }
+
+        for(const key in instructorReikies){
+            result.push(
+                {
+                    id:key,
+                    name:instructorReikies[key].name,
+                    selected:instructorReikies[key].selected,
+                }
+            )
+        }
+        res.send(result);
+
+    }catch(error){
+        res.send({error:"No instructor found!"});
+    }
+}
+
+module.exports.set_instructor_reikis = async(req,res)=>{
+    try{
+        const data = req.body.data;
+        console.log(data);
+
+        const instructor = await Instructor.findById(res.user.id);
+
+        const reikies = [];
+
+        for(let i=0;i<data.length;i++){
+            if(data[i].selected )
+            reikies.push(data[i].id);
+        }
+        instructor.instructorReikis = reikies;
+        await instructor.save();
+        res.send(data);
+
+    }catch(error){
+        res.send({error:"No instructor found!"});
     }
 }
 

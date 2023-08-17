@@ -1,17 +1,5 @@
 const mongoose = require("mongoose");
 
-const razorpaySchema = new mongoose.Schema({
-    orderId:{
-        type:String,
-    },
-    paymentId:{
-        type:String
-    },
-    signature:{
-        type:String
-    }
-});
-
 const appointmentSchema = new mongoose.Schema({
     start_time:{
         type:Date,
@@ -61,8 +49,8 @@ const appointmentSchema = new mongoose.Schema({
         type:String,
         default:null
     },
-    razorpay:{
-        type:razorpaySchema,
+    stripe_payment_id:{
+        type:String,
         default:null
     }
 });

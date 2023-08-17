@@ -44,11 +44,12 @@ module.exports.user_forgot_password_post = async (req,res)=>{
             if(err) throw Error(err);
             user.password = await User.hashPassword(pass);
             await user.save();
-            res.send({status:"Success",message:info.response});
+            console.log(info);
+            res.send({message:"New password is sent to email!"});
         });
 
     }catch(error){
-        res.send({status:"Error","message":"Error while sending new password to user's email!"});
+        res.send({error:"No account with given email!"});
     }
 }
 
@@ -91,10 +92,11 @@ module.exports.instructor_forgot_password_post = async (req,res)=>{
             if(err) throw Error(err);
             user.password = await Instructor.hashPassword(pass);
             await user.save();
-            res.send({status:"Success",message:info.response});
+            console.log(info);
+            res.send({message:"New password is sent to email!"});
         });
 
     }catch(error){
-        res.send({status:"Error","message":"Error while sending new password to user's email!"});
+        res.send({error:"No account with given email!"});
     }
 }

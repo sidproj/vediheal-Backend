@@ -4,7 +4,7 @@ const Benifit = require("../models/benifits");
 
 module.exports.get_all_reikies = async (req,res)=>{
     try{
-        const reikies = await Reiki.find();
+        const reikies = await Reiki.find({is_deleted:false});
         for(let i=0;i<reikies.length;i++){
             await reikies[i].populate({
                 path:"benifits",
