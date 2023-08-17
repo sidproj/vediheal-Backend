@@ -40,13 +40,10 @@ module.exports.login_post = async (req, res) => {
         const user = await User.login(email, password);
         const jwtToken = createJWT(user._id);
 
-    //   res.cookie("jwt", jwtToken, { httpOnly: true });
-        res.status(200).json({ 
-            message: "Login successful!",
-            jwt: jwtToken
-        });
+
+        res.status(200).json({user,jwt:jwtToken});
     } catch (err) {
-        console.log("User controller: ", err);
+        console.log("User controller: ", err.message);
         res.status(400).json({ error: err.message });
     }
 };
@@ -76,7 +73,7 @@ module.exports.signup_post = async (req, res) => {
 
             const jwtToken = createJWT(user._id);
             res.status(201).json({ 
-                message: "Registration Successful",
+                user:user,
                 jwt:jwtToken
             });
         } else throw Error("Passwords must match");
@@ -107,6 +104,7 @@ module.exports.profile_get = async (req, res) => {
 
 module.exports.profile_post = async (req, res) => {
     try{
+        console.log(req.body);
         const user = await User.findById(res.user.id);
         console.log(user);
         if(!user) throw Error("No user found!");
@@ -117,15 +115,11 @@ module.exports.profile_post = async (req, res) => {
         user.email = req.body.email;
         
         await user.save();
-        res.send({
-            user:{
-                first_name:user.first_name,
-                last_name:user.last_name,
-                phone_no:user.phone_no,
-                email:user.email
-            }});
+        const jwtToken = createJWT(user._id);
+
+        res.send({user,jwt:jwtToken});
     }catch(error){
-        res.send({"error":"error","message":"No user found!"});
+        res.send({error:"No user found!"});
     }
   };
     
@@ -145,7 +139,7 @@ module.exports.change_password = async (req,res)=>{
 
         user.password = await User.hashPassword(req.body.password);
         await user.save();
-        res.send({status:"success","message":"Password change successfully"});
+        res.send({status:"success"});
 
     }catch(error){
         res.send({status:"Error","message":error.message});

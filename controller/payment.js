@@ -11,9 +11,8 @@ module.exports.createPaymentIndent = async(req,res)=>{
   */
 
   console.log(req.body);
-  const service = req.body.service;
   const paymentIntent = await stripe.paymentIntents.create({
-      amount: service.price * 100,
+      amount: req.body.amount * 100,
       currency: "inr",
       automatic_payment_methods: {
         enabled: true,

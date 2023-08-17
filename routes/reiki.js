@@ -18,4 +18,8 @@ router.post("/addReiki",requireAuth,instructorController.add_reiki_post);
 
 router.post("/instructorsByReiki",instructorController.get_all_instructors_by_reiki);
 
+router.post("/instructor/reikies",requireAuth,instructorController.get_instructor_reikis);
+router.post("/instructor/set",requireAuth,instructorController.set_instructor_reikis);
+
+
 module.exports = router;

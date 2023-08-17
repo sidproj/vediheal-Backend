@@ -25,7 +25,7 @@
                                 <label for="donationinput1" class="sr-only">Appointment ID</label>
                                 <div class="fm-ele">
                                     <h6>Appointment ID</h6>
-                                    <input type="text" disabled class="form-control inpt-info" value="<%= appointment.id %>" id="id" name="id" >
+                                    <input type="text" disabled class="form-control inpt-info" value="<%=appointment.id%>" id="id" name="id" />
                                 </div>
                             </div>
                             <hr>
@@ -35,7 +35,7 @@
                                     <label for="donationinput1" class="sr-only">Stripe Payment ID</label>
                                     <div class="fm-ele">
                                         <h6>Stripe Payment ID</h6>
-                                        <input type="text"  required spellcheck="false" class="form-control inpt-info" value="<%= appointment.stripe_payment_id %>" id="meeting" name="meeting" >
+                                        <input type="text"  required spellcheck="false" class="form-control inpt-info" value="<%=appointment.stripe_payment_id%>" id="stripe_payment_id" name="stripe_payment_id" />
                                     </div>
                                 </div>
 
@@ -45,7 +45,7 @@
                                 <label for="donationinput1" class="sr-only">Meeting Link</label>
                                 <div class="fm-ele">
                                     <h6>Meeting Link</h6>
-                                    <input type="text"  required spellcheck="false" class="form-control inpt-info" value="<%= appointment.meeting_link %>" id="meeting" name="meeting" >
+                                    <input type="text"  required spellcheck="false" class="form-control inpt-info" value="<%=appointment.meeting_link%>" id="meeting" name="meeting" />
                                 </div>
                             </div>
 
@@ -114,9 +114,17 @@
                             <div class="fm-ele">
                                 <h6>Appointment Starting Time</h6>
                                 <%if((""+appointment.start_time?.getMinutes()).length == 1) {%>
-                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
-                                <%}else{%>
-                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%if((""+appointment.start_time?.getHours()).length == 1){%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= "0"+appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}else{%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}%>    
+                                <%}else{%> 
+                                    <%if((""+appointment.start_time?.getHours()).length == 1){%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= "0"+appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}else{%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}%>   
                                 <%}%>
                             </div>
                         </div>

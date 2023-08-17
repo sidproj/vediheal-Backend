@@ -265,7 +265,7 @@ module.exports.edit_reiki_post = async (req,res)=>{
         if(!reiki) throw new Error("No reiki found");
 
         // console.log(reiki);
-        // console.log(req.body);
+        console.log(req.body);
 
         reiki.name = req.body.name;
         reiki.description = req.body.description;
@@ -310,13 +310,14 @@ module.exports.add_reiki_get = async (req,res)=>{
 
 module.exports.add_reiki_post = async (req,res)=>{
     try{
-        const {name,description,image,benifits,expectations} = req.body;
+        const {name,description,image,benifit,expectation} = req.body;
+        console.log(req.body);
         const reiki = new Reiki({
             name,
             description,
             image,
-            benifits,
-            expectations
+            benifits:benifit,
+            expectations:expectation
         });
         await reiki.save();
         res.redirect(`/admin/reikies`);
@@ -329,7 +330,7 @@ module.exports.add_reiki_post = async (req,res)=>{
 module.exports.appointments_get = async (req,res)=>{
     try{
         const admin = await User.findById(res.user.id);
-        const appointments = await Appointment.find({is_appointed:true});
+        const appointments = await Appointment.find({is_completed:true});
 
         for(let i=0;i<appointments.length;i++){
             await appointments[i].populate({
@@ -369,6 +370,8 @@ module.exports.appointment_get = async (req,res)=>{
             path:"reiki_id",
             model: Reiki, 
         });
+
+        console.log(appointment.start_time);
 
         res.render("appointment",{appointment,admin});
     }catch(error){
@@ -421,6 +424,8 @@ module.exports.edit_appointments_get = async (req,res)=>{
             path:"time_slot",
             model:Schedule,
         });
+        
+        console.log(appointment.start_time);
 
         res.render("editAppointment",{admin,appointment,instructors});
 
@@ -433,12 +438,14 @@ module.exports.edit_appointments_post = async (req,res)=>{
     try{
         // const admin = await User.findById(res.user.id);
 
+        console.log(req.body);
         const appointment = await Appointment.findById(req.params.id);
         if(!appointment) throw Error("Now appointment found");
 
         appointment.instructor_id = req.body.instructor_id;
         appointment.meeting_link = req.body.meeting;
         appointment.is_appointed = true;
+        appointment.stripe_payment_id = req.body.stripe_payment_id;
         await appointment.save();
 
         await appointment.populate({
@@ -483,6 +490,7 @@ module.exports.edit_appointments_post = async (req,res)=>{
 
         transporter.sendMail(mailOptions,async (err,info)=>{
             if(err) throw Error(err);
+            console.log(info);
             // send mail to instructor
             const receiverInstructor = appointment.instructor_id.email;
             const subjectInstructor = "New appointment booked.";
