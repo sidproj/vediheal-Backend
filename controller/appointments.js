@@ -127,57 +127,57 @@ module.exports.set_appointments_post = async(req,res)=>{
         const reiki = await Reiki.findById(req.body.reiki);
 
         // if(!user || !reiki) throw Error("Error while setting appointments!");
+        console.log(req.body);
 
-        const appointment = Appointment({
-            user_id:res.user.id,
-            reiki_id:req.body.reiki,
-            price:req.body.price,
-            // time_slot:req.body.schedule_id,
-            // instructor_id:schedule.instructor_id,
-            start_time:req.body.start_time,
-            stripe_payment_id:req.body.stripe_payment_id,
-        });
+        for(let key in req.body.dateTime){
+            const appointment = Appointment({
+                user_id:res.user.id,
+                reiki_id:req.body.reiki,
+                price:req.body.price,
+                // time_slot:req.body.schedule_id,
+                // instructor_id:schedule.instructor_id,
+                start_time:req.body.dateTime[key],
+                stripe_payment_id:req.body.stripe_payment_id,
+            });
+            
+            // schedule.is_booked=true;
+            await appointment.save();
 
-        // schedule.is_booked=true;
-        await appointment.save();
+            // send mail to client
+            const receiverClient = user.email;
+            const subjectClient = "Appointment booked successfully.";
+            // const htmlClient = `<p>Your appointment is booked with instructor: 
+            //     <b> ${instructor.first_name} ${instructor.last_name}</b><br>
+            //     email: <b>${instructor.email}</b><br>
+            //     for reikie: <b>${reiki.name}</b><br>
+            //     on: <b> ${schedule.start_time}</b>
+            // </p>`;
+            
+            const htmlClient = `<p>Your appointment is booked 
+                for reiki: <b>${reiki.name}</b><br>
+                Your instructor will be alloted soon.
+            </p>`;
+            // await sendMail.sendMail(receiverClient,subjectClient,htmlClient);
+            const transporter = nodemailer.createTransport({
+                service: "hotmail",
+                auth: {
+                user: process.env.OUTLOOK_ID,
+                pass: process.env.OUTLOOK_APP_PASSWORD,
+                },
+            });
+            const mailOptions = {
+                from: `Vediheal ${process.env.OUTLOOK_ID}`, // sender address
+                to: receiverClient, // list of receivers
+                subject: subjectClient,
+                html:htmlClient,
+            };
 
-        // send mail to client
-        const receiverClient = user.email;
-        const subjectClient = "Appointment booked successfully.";
-        // const htmlClient = `<p>Your appointment is booked with instructor: 
-        //     <b> ${instructor.first_name} ${instructor.last_name}</b><br>
-        //     email: <b>${instructor.email}</b><br>
-        //     for reikie: <b>${reiki.name}</b><br>
-        //     on: <b> ${schedule.start_time}</b>
-        // </p>`;
-        
-        const htmlClient = `<p>Your appointment is booked 
-            for reikie: <b>${reiki.name}</b><br>
-            Your instructor will be alloted soon.
-        </p>`;
-        // await sendMail.sendMail(receiverClient,subjectClient,htmlClient);
-        const transporter = nodemailer.createTransport({
-            service: "hotmail",
-            auth: {
-              user: process.env.OUTLOOK_ID,
-              pass: process.env.OUTLOOK_APP_PASSWORD,
-            },
-        });
-        const mailOptions = {
-            from: `Vediheal ${process.env.OUTLOOK_ID}`, // sender address
-            to: receiverClient, // list of receivers
-            subject: subjectClient,
-            html:htmlClient,
-        };
-
-        transporter.sendMail(mailOptions,async (err,info)=>{
-            if(err) throw Error(err);
-        });
-        //
-        res.send({status:"success",appointment});
+            await transporter.sendMail(mailOptions);
+        }
+        res.send({status:"success"});
     }catch(err){
         console.log(err);
-        res.send({status:"Error",error:err.message});
+        res.send({error:err.message});
     }
 }
 
@@ -197,7 +197,7 @@ module.exports.set_meeting_link = async (req,res)=>{
         const htmlClient = `<p>Your appointment is booked with instructor: 
             <b> ${instructor.first_name} ${instructor.last_name}</b><br>
             email: <b>${instructor.email}</b><br>
-            for reikie: <b>${reiki.name}</b><br>
+            for reiki: <b>${reiki.name}</b><br>
             New meeting link: <b> ${appointment.meeting_link}</b>
         </p>`;
         // await sendMail.sendMail(receiverClient,subjectClient,htmlClient);
@@ -224,7 +224,7 @@ module.exports.set_meeting_link = async (req,res)=>{
             const htmlInstructor = `<p>Your appointment is booked with Client: 
                 <b> ${user.first_name} ${user.last_name}</b><br>
                 email: <b>${user.email}</b><br>
-                for reikie: <b>${reiki.name}</b><br>
+                for reiki: <b>${reiki.name}</b><br>
                 New meeting link: <b> ${appointment.meeting_link}</b>
             </p>`;
             // await sendMail.sendMail(receiverInstructor,subjectInstructor,htmlInstructor);

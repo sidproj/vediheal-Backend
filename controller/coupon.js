@@ -58,7 +58,7 @@ module.exports.contact_us_mail = async (req,res)=>{
         transporter.sendMail(mailOptions,async (err,info)=>{
             if(err) throw Error(err);
             console.log(info);
-            res.send({message:"Thank you! We will get back to you."});
+            res.send({status:true,message:"Thank you! We will get back to you."});
         });
 
     }catch(error){
