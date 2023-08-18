@@ -26,10 +26,7 @@ const app = express();
 // app.options('*', cors());
 app.use(
   cors({
-    origin: [
-      '*',
-      // "https://vediheal.vercel.app/",
-    ],
+    origin:["*","http://192.168.1.12:3000","http://localhost:3000"],
   })
 );
 
