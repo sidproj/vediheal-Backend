@@ -67,9 +67,6 @@ app.get("/",(req,res)=>{
   res.send("welcome to vediheal backend");
 })
 
-app.use("/review",review);
-//testing---------------
-//----------------------
 
 //done------------------
 
@@ -83,4 +80,5 @@ app.use("/appointment",appointment);
 app.use("/schedule",schedule);
 app.use("/coupon",coupon);
 app.use("/payment",payment)
+app.use("/review",review);
 //----------------------
