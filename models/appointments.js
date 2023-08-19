@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const feed_back = {
+    data:{
+        type:String,
+        default:null,
+    },
+    stars:{
+        type:Number,
+        default:null,
+    }
+};
+
 const appointmentSchema = new mongoose.Schema({
     start_time:{
         type:Date,
@@ -52,6 +63,10 @@ const appointmentSchema = new mongoose.Schema({
     stripe_payment_id:{
         type:String,
         default:null
+    },
+    feedback:{
+        type:feed_back,
+        default:null,
     }
 });
 
