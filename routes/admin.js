@@ -42,6 +42,7 @@ router.get("/appointments/:id",requireAuthAdmin,adminController.appointment_get)
 router.get("/pendingAppointments",requireAuthAdmin,adminController.pending_appointments_get);
 router.get("/editAppointments/:id",requireAuthAdmin,adminController.edit_appointments_get);
 router.post("/editAppointments/:id",requireAuthAdmin,adminController.edit_appointments_post);
+router.post("/refund/:id",requireAuthAdmin,adminController.set_refund_status);
 
 //benifits
 router.get("/benifits",requireAuthAdmin,adminController.benifits_get);

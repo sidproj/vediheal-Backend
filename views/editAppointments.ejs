@@ -21,7 +21,6 @@
                                   <th class="card-title">Sr no.</th>
                                   <th class="card-title">User Email</th>
                                   <th class="card-title">Reiki Name</th>
-                                  <th class="card-title">View</th>
                                   <th class="card-title">Edit</th>
                               </tr>
                           </thead>
@@ -32,9 +31,6 @@
                                   <th class="card-subtitle" scope="row"><%= i+1%></th>
                                   <td class="card-subtitle"><%= appointments[i].user_id.email%></td>
                                   <td class="card-subtitle"><%= appointments[i].reiki_id.name%></td>
-                                  <td>
-                                      <a href="/admin/appointments/<%= appointments[i].id%>"><button type="button" class="btn mr-1 mb-1 btn-dark btn-sm"><i class="la la-eye"></i></button></a>
-                                  </td>
                                   <td>
                                     <a href="/admin/editAppointments/<%= appointments[i].id%>"><button type="button" class="btn mr-1 mb-1 btn-warning btn-sm"><i class="la la-edit"></i></button></a>
                                 </td>

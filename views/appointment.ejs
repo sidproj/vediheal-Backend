@@ -111,9 +111,17 @@
                             <div class="fm-ele">
                                 <h6>Appointment Starting Time</h6>
                                 <%if((""+appointment.start_time?.getMinutes()).length == 1) {%>
-                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
-                                <%}else{%>
-                                    <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%if((""+appointment.start_time?.getHours()).length == 1){%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= "0"+appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}else{%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}%>
+                                <%}else{%> 
+                                    <%if((""+appointment.start_time?.getHours()).length == 1){%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= "0"+appointment.start_time?.getHours() + ":" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}else{%>
+                                        <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                    <%}%>   
                                 <%}%>
                             </div>
                         </div>

@@ -67,6 +67,11 @@ const appointmentSchema = new mongoose.Schema({
     feedback:{
         type:feed_back,
         default:null,
+    },
+    status:{
+        type:String,
+        enum:['PLACED','CANCELED','REFUNDED'],
+        default:'PLACED',
     }
 });
 

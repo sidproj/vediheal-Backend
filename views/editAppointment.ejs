@@ -118,22 +118,52 @@
                                         <input type="time"  class="form-control inpt-info" value="<%= "0"+appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
                                     <%}else{%>
                                         <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
-                                    <%}%>    
+                                    <%}%>
                                 <%}else{%> 
                                     <%if((""+appointment.start_time?.getHours()).length == 1){%>
-                                        <input type="time"  class="form-control inpt-info" value="<%= "0"+appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                        <input type="time"  class="form-control inpt-info" value="<%= "0"+appointment.start_time?.getHours() + ":" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
                                     <%}else{%>
-                                        <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":0" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
+                                        <input type="time"  class="form-control inpt-info" value="<%= appointment.start_time?.getHours() + ":" + appointment.start_time?.getMinutes()%>" id="time" name="time" >
                                     <%}%>   
                                 <%}%>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="form-actions center">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div><br><br><br>
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div><br><br><br>
                     </form>
+
+                    
+                    <div class="card-body">
+                        <form action="/admin/refund/<%= appointment.id%>" method="POST">
+                            <div class="form-body">   
+                                <div class="form-group">
+                                    <label for="donationinput1" class="sr-only">Appointment Status</label>
+                                    <div class="fm-ele">
+                                        <h6>Appointment Status</h6>
+                                        <select required id="status" name="status" class="form-control inpt-info">
+                                            <%if(appointment.status == null || appointment.status == "PLACED"){%>
+                                                <option class="form-control inpt-info" selected value="PLACED">PLACED</option>
+                                                <option class="form-control inpt-info" value="CANCELED">CANCELED</option>
+                                                <option class="form-control inpt-info" value="REFUNDED">REFUNDED</option>
+                                            <%}else if(appointment.status == "CANCELED"){%>
+                                                <option class="form-control inpt-info" value="PLACED">PLACED</option>
+                                                <option class="form-control inpt-info" selected value="CANCELED">CANCELED</option>
+                                                <option class="form-control inpt-info" value="REFUNDED">REFUNDED</option>
+                                            <%}else{%>
+                                                <option class="form-control inpt-info" value="PLACED">PLACED</option>
+                                                <option class="form-control inpt-info" value="CANCELED">CANCELED</option>
+                                                <option class="form-control inpt-info" selected value="REFUNDED">REFUNDED</option>
+                                            <%}%>
+                                        </select>
+                                    </div>
+                                    <div class="form-actions center">
+                                        <button type="submit" class="btn btn-primary">Updated status</button>
+                                    </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

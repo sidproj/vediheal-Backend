@@ -12,6 +12,7 @@ router.post("/instructor/complete",requireAuth,Appointment.instructor_appointmen
 
 router.post("/set",requireAuth,Appointment.set_appointments_post);
 router.post("/changeLink",requireAuth,Appointment.set_meeting_link);
+router.post("/cancel",requireAuth,Appointment.cancel_meeting);
 // router.get("/",Appointment.testMail);
 
 
