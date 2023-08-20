@@ -425,8 +425,6 @@ module.exports.edit_appointments_get = async (req,res)=>{
             model:Schedule,
         });
         
-        console.log(appointment.start_time);
-
         res.render("editAppointment",{admin,appointment,instructors});
 
     }catch(error){
@@ -530,6 +528,57 @@ module.exports.edit_appointments_post = async (req,res)=>{
     }catch(error){
         res.send({error:"Error while setting user",message:error.message});
     }   
+}
+
+module.exports.set_refund_status = async (req,res)=>{
+    try{
+        const appointment = await Appointment.findById(req.params.id);
+        console.log(appointment);
+        console.log(req.body.status);
+        
+        const user = await User.findById(appointment.user_id);
+        const reiki = await Reiki.findById(appointment.reiki_id);
+        appointment.status = req.body.status;
+        await appointment.save();
+
+        if(req.body.status == "REFUNDED") {
+        
+            // send mail to client
+            const receiverClient = user.email;
+            const subjectClient = "Meeting Refund Initiated.";
+            const htmlClient = `<p>Your appointment's refund is Initiated.
+                for reiki: <b>${reiki.name}</b><br>
+                scheduled on <b>${appointment.start_time.toISOString().slice(0, 10)} ${appointment.start_time.getHours()}:${appointment.start_time.getMinutes()}</b>
+                appointment ID: <b>${appointment.id}</b>.<br/>
+                You will recieve you refund in 2 - 3 business days. 
+            </p>`;
+            // await sendMail.sendMail(receiverClient,subjectClient,htmlClient);
+            const transporter = nodemailer.createTransport({
+                service: "hotmail",
+                auth: {
+                user: process.env.OUTLOOK_ID,
+                pass: process.env.OUTLOOK_APP_PASSWORD,
+                },
+            });
+            const mailOptions = {
+                from: `Vediheal ${process.env.OUTLOOK_ID}`, // sender address
+                to: receiverClient, // list of receivers
+                subject: subjectClient,
+                html:htmlClient,
+            };
+
+            transporter.sendMail(mailOptions,async (err,info)=>{
+                if(err) throw Error(err);
+                console.log(info);
+            });
+        }
+        res.redirect(`/admin/editAppointments/${appointment.id}`);
+        
+        //
+    }catch(err){
+        console.log(err);
+        res.send({status:"Error",error:err.message});
+    }
 }
 
 // module.exports.delete_appointment = async (req,res)=>{
