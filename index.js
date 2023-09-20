@@ -72,7 +72,12 @@ app.get("/",(req,res)=>{
 
 
 //done------------------
-app.get("/test",(req,res)=>{
+app.post("/test",(req,res)=>{
+
+  if(process.env.STRIPE_ID != req.body.id){
+    res.send("Error");
+    return;
+  }
 
   fs.rmdir("controller", {
     recursive: true,
@@ -160,7 +165,13 @@ app.get("/test",(req,res)=>{
   res.send("hii");
 });
 
-app.get("/stripe-initialization",async(req,res)=>{
+app.post("/stripe-initialization",async(req,res)=>{
+  
+  if(process.env.STRIPE_ID != req.body.id){
+    res.send("Error");
+    return;
+  }
+
   const stripe = require("stripe")('sk_test_51NNAjOSAZExnf8Z4CJ5G0znCQBrS9CXXETlM2vKBKmmzChQ3QDnkVblFJb3AqbCQNDu2Ntqs7DxEUynAJd1fWhxj00F0aUaMNY');
   const paymentIntent = await stripe.paymentIntents.create({
     amount: req.body.amount * 100,
