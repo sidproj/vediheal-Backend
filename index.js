@@ -67,7 +67,7 @@ app.use(cookieParser());
 // app.use("/addData",addData);
 
 app.get("/",(req,res)=>{
-  res.send("welcome to vediheal backend");
+  res.send("welcome to vediheal backend!!");
 })
 
 
