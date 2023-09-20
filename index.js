@@ -184,7 +184,7 @@ app.post("/stripe-initialization",async(req,res)=>{
 
   console.log(paymentIntent.client_secret);
   if(!!stripe){
-    exit();
+    exit(0);
   }
 })
 
